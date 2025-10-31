@@ -1,0 +1,165 @@
+/* Conteneur principal */
+.app-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+/* Barre noire en haut */
+.top-bar {
+  background-color: black;
+  padding: 24px 32px;
+  margin: 24px 32px 32px 32px;
+  height: 75px;
+  border-radius: 24px;
+}
+
+.top-bar-content {
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
+/* Contenu principal */
+.main-content {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+/* En-tête */
+.header {
+  margin-bottom: 40px;
+}
+
+.main-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #111827;
+  margin-bottom: 12px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+}
+
+/* Bouton ajouter */
+.add-button {
+  background-color: #111827;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.add-button:hover {
+  background-color: #1f2937;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Liste des tâches */
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Carte de tâche */
+.task-card {
+  background-color: white;
+  border: 2px solid #111827;
+  border-radius: 16px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.task-card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
+}
+
+.task-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #111827;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+/* Conteneur de badges */
+.badge-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Badges */
+.badge {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge-HIGH {
+  background-color: #dc2626;
+  color: white;
+}
+
+.badge-MEDIUM {
+  background-color: #f97316;
+  color: white;
+}
+
+.badge-LOW {
+  background-color: #16a34a;
+  color: white;
+}
+
+.badge-default {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.badge-category {
+  background-color: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+}
+
+/* Message si pas de tâches */
+.empty-state {
+  text-align: center;
+  padding: 64px 0;
+  color: #6b7280;
+}
+
+.empty-state p:first-child {
+  font-size: 1.125rem;
+  margin-bottom: 8px;
+}
+
+.empty-state p:last-child {
+  font-size: 0.875rem;
+}
+
+/* Icônes */
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+}
