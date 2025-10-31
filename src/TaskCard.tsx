@@ -5,13 +5,13 @@ import type { Task } from './types';
 
 interface TaskCardProps {
   task: Task;
-  onClick: () => void;
+  onClick?: () => void; 
 }
 
 export const TaskCard = ({ task, onClick }: TaskCardProps) => {
   return (
-    <button className="task-card" onClick={onClick}>
-      <h3 className="task-title">
+    <button className="task-card" onClick={onClick}>  {}
+      <h3 className = "task-title">
         {task.title}
       </h3>
       

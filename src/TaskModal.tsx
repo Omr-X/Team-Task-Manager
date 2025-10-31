@@ -1,6 +1,7 @@
 import React from "react";
 import type { Task } from './types';
 import "./TaskModal.css";
+import { useState } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -8,9 +9,17 @@ interface ModalProps {
   task: Task | null;
 }
 
+export function InputText(props:any) {
+  return (
+    <div>
+      <h2 className="subtitle">{props.title}</h2>
+      {props.multiline ?(<textarea value = {props.value} onChange={(e) => props.setValue(e.target.value)} className = {props.className} placeholder={props.placeholder}></textarea>)
+      : (<input value = {props.value} onChange={(e) => props.setValue(e.target.value)} className = {props.className} placeholder={props.placeholder}></input>)}
+    </div>
+  );
+}
+
 export default function Modal({ isOpen, onClose }: ModalProps) {
-  
-  if (!isOpen) return null;
 
   if (isOpen) {
     document.body.classList.add('active-modal');
@@ -18,18 +27,29 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
     document.body.classList.remove('active-modal');
   }
 
-  return (
+  if (!isOpen) return null;
+
+  const [valueTitle, setValueTitle] = useState('');
+  const [valueDescription,setValueDescription] = useState('');
+
+    return (
     <>
       <div className="modal">
         <div onClick={onClose} className="overlay"></div>
         <div className="modal-content">
-          <h2>Hello Modal</h2>
-          <p>allo</p>
+          <h1>Creer une tache</h1>
+          <InputText title="Titre" value = {valueTitle} setValue = {setValueTitle} placeholder = "Titre de la tache" className = "input-text"/>
+          <span><InputText title="Titre" value = {valueTitle} setValue = {setValueTitle} placeholder = "Titre de la tache" className = "input-text"/></span>
+          <InputText title="Description" value = {valueDescription} setValue = {setValueDescription} placeholder = "Description de la tache" className = "description-text" textarea = {true}/>
           <button className="close-modal" onClick={onClose}>
-            CLOSE
           </button>
         </div>
       </div>
     </>
   );
+
+  
 }
+
+
+

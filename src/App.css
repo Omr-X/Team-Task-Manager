@@ -93,7 +93,11 @@
   font-weight: bold;
   color: #111827;
   margin-bottom: 16px;
+  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;    
   line-height: 1.4;
+  max-width: 100%;
 }
 
 /* Conteneur de badges */

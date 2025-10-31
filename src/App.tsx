@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { TaskCard } from './TaskCard';
-import Modal from './TaskModal';
+import Modal from './TaskModal';  // ← AJOUT: Import du Modal
 import type { Task } from './types';
 import './App.css';
 
@@ -34,15 +34,9 @@ export default function TaskManager() {
   ]);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
-  };
-
-  const handleTaskClick = (task: Task) => {
-    setSelectedTask(task);
-    setModalOpen(true);
   };
 
   const addNewTask = () => {
@@ -74,18 +68,14 @@ export default function TaskManager() {
           <p className="subtitle">Toutes les tâches seront données ici</p>
         </div>
 
-        <button onClick={addNewTask} className="add-button">
+        <button onClick={() => {toggleModal(); addNewTask();}} className="add-button">
           <Plus size={20} />
           Ajouter une tâche
         </button>
 
         <div className="tasks-list">
           {tasks.map((task) => (
-            <TaskCard 
-              key={task.id} 
-              task={task} 
-              onClick={() => handleTaskClick(task)}
-            />
+            <TaskCard key={task.id} task={task}/>
           ))}
         </div>
 
@@ -95,11 +85,11 @@ export default function TaskManager() {
             <p>Cliquez sur le bouton ci-dessus pour en ajouter une</p>
           </div>
         )}
-
+        
         <Modal 
           isOpen={modalOpen} 
           onClose={toggleModal}
-          task={selectedTask}
+          task={null}
         />
       </div>
     </div>
