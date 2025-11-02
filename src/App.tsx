@@ -39,7 +39,7 @@ export default function TaskManager() {
     setModalOpen(!modalOpen);
   };
 
-  const addNewTask = () => {
+   const addNewTask = () => {
     const newTask: Task = {
       id: tasks.length + 1,
       title: "Nouvelle tâche à définir",
