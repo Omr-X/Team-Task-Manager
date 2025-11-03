@@ -2,15 +2,18 @@ import React from 'react';
 import { User, Calendar, AlertCircle } from 'lucide-react';
 import { Badge } from './Badge';
 import type { Task } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 interface TaskCardProps {
   task: Task;
   onClick?: () => void; 
 }
 
-export const TaskCard = ({ task, onClick }: TaskCardProps) => {
+export const TaskCard = ({ task }: TaskCardProps) => {
+  const navigate = useNavigate();
+  
   return (
-    <button className="task-card" onClick={onClick}>  {}
+    <button className="task-card" onClick={() => navigate('/TaskPage', { state: { task } })}>  {}
       <h3 className = "task-title">
         {task.title}
       </h3>

@@ -15,7 +15,8 @@
 
 .top-bar-content {
   max-width: 1152px;
-  margin: 0 auto;
+  margin-top: -5px;
+  color: white;
 }
 
 /* Contenu principal */
@@ -42,6 +43,7 @@
 .subtitle {
   font-size: 1.125rem;
   color: #6b7280;
+  max-width: 100%;
 }
 
 /* Bouton ajouter */
@@ -166,5 +168,23 @@
 .icon {
   display: inline-block;
   vertical-align: middle;
+}
+
+.add-button-black{
+  background-color: black;
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.small-text {
+  color: #6b7280;
+  max-width: 100%;
 }
 

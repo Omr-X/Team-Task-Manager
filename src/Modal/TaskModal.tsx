@@ -164,7 +164,11 @@ export default function Modal({ isOpen, onClose, tasks, setTasks }: ModalProps) 
             assignee: valueResponsable,
             priority: valuePriority,
             category: valueCategory,
-            dueDate: valDueDate
+            dueDate: valDueDate,
+            description: valueDescription,
+            Responsable: valueResponsable,
+            Team: valueTeam,
+            date: new Date().toLocaleString('fr-FR')
 
           }); onClose();}}>
             Publier

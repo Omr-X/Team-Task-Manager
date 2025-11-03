@@ -4,15 +4,13 @@ import { TaskCard } from './TaskCard';
 import Modal from '../Modal/TaskModal';
 import type { Task } from '../types';
 import './App.css';
-import { Link } from 'react-router-dom';
 
 const fullMonths = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
 
 const formatDateString = (dateString: string): string => {
   const months = fullMonths;
   const [day, month, year] = dateString.split('/');
-  const monthIndex = parseInt(month) - 1; // Convert to 0-indexed
-
+  const monthIndex = parseInt(month) - 1;
   return `${day} ${months[monthIndex]} ${year}`;
 };
 
@@ -29,15 +27,27 @@ export const addNewTask = (
     dueDate: (taskData?.dueDate && taskData.dueDate !== '')
       ? formatDateString(taskData.dueDate)
       : "Date non assignée",
-    category: taskData?.category || "Général"
+    category: taskData?.category || "Général",
+    description: taskData?.description || "Aucune description a ete donne pour cette tache",
+    Responsable: taskData?.Responsable || "Aucune responsable a ete donne pour cette tache",
+    Team: taskData?.Team || "Aucune equipe pour cette tache",
+    date: taskData?.date || ""
   };
-
-  setTasks([...tasks, newTask]);
+  
+  const updatedTasks = [...tasks, newTask];
+  setTasks(updatedTasks);
+  localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   return newTask;
 };
 
 export default function TaskManager() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const saved = localStorage.getItem('tasks');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    return []; // ← Return empty array as default
+  });
 
   const [modalOpen, setModalOpen] = useState(false);
 
