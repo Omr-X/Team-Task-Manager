@@ -10,6 +10,16 @@ export default function TaskPage() {
     const navigate = useNavigate();
     const task = location.state?.task as Task;
 
+    const deleteTask = () => {
+        const saved = localStorage.getItem('tasks');
+        if (saved) {
+            const tasks: Task[] = JSON.parse(saved);
+            const updatedTasks = tasks.filter(t => t.id !== task.id);
+            localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+            navigate('/');
+        }
+    };
+
     if (!task) {
         return <div><h1>No task found</h1></div>;
     }
@@ -60,19 +70,22 @@ export default function TaskPage() {
                 </div>
 
                 <div className="creation-info">
-                <span className="creation-text">Created by idk on {task.date}</span>
-            </div>
-
-            <div className="comments-section">
-                <h2 className="subtitle">Comments</h2>
-                <div className="comment-input-container">
-                    <input
-                        type="text"
-                        className="comment-input"
-                        placeholder="Add a comment..."
-                    />
+                    <span className="creation-text">Created by idk on {task.date}</span>
                 </div>
-            </div>
+
+                <div className="comments-section">
+                    <h2 className="subtitle">Comments</h2>
+                    <div className="comment-input-container">
+                        <input
+                            type="text"
+                            className="comment-input"
+                            placeholder="Add a comment..."
+                        />
+                    </div>
+                </div>
+                <div className="actions-container">
+                    <button className="delete-btn" onClick={deleteTask}>Delete Task</button>
+                </div>
             </div>
         </div>
     );
