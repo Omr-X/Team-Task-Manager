@@ -1,7 +1,7 @@
 import React from 'react';
 import { User, Calendar, AlertCircle } from 'lucide-react';
 import { Badge } from './Badge';
-import type { Task } from './types';
+import type { Task } from '../types';
 
 interface TaskCardProps {
   task: Task;

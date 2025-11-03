@@ -1,12 +1,15 @@
-import type { Task } from './types';
+import type { Task } from '../types.ts';
 import "./TaskModal.css";
 import { useState, type ReactElement } from "react";
 import { CircleCheck, X } from 'lucide-react';
+import {addNewTask} from '../Main Page/App.tsx';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   task: Task | null;
+  tasks: Task[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
 export function InputText(props: any) {
@@ -19,15 +22,49 @@ export function InputText(props: any) {
   );
 }
 
+export function DateInput(props: any) {
+  const formatDate = (value: string) => {
+    // Remove all non-numeric characters
+    const numbers = value.replace(/\D/g, '');
+    
+    // Add slashes at appropriate positions
+    if (numbers.length <= 2) {
+      return numbers;
+    } else if (numbers.length <= 4) {
+      return numbers.slice(0, 2) + '/' + numbers.slice(2);
+    } else {
+      return numbers.slice(0, 2) + '/' + numbers.slice(2, 4) + '/' + numbers.slice(4, 8);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatDate(e.target.value);
+    props.setValue(formatted);
+  };
+
+  return (
+    <div>
+      <h2 className="subtitle">{props.title}</h2>
+      <input 
+        value={props.value} 
+        onChange={handleChange}
+        className={props.className} 
+        placeholder="DD/MM/YYYY"
+        maxLength={10}
+      />
+    </div>
+  );
+}
+
 export function DropDown(props: any) {
-  const { title, items } = props;
+  const { title, items, value, setValue } = props;
 
   return (
     <div>
       <label>
         <div className='row'>
           <h2 className='subtitle'>{title}</h2>
-          <select name={title} className='dropDown'>
+          <select name={title} className='dropDown' value ={value} onChange={(e) => setValue(e.target.value)}>
             {items.map((item: string, index: number) => (
               <option key={index} value={item}>
                 {item}
@@ -40,7 +77,7 @@ export function DropDown(props: any) {
   );
 }
 
-export default function Modal({ isOpen, onClose }: ModalProps) {
+export default function Modal({ isOpen, onClose, tasks, setTasks }: ModalProps) {
 
   if (isOpen) {
     document.body.classList.add('active-modal');
@@ -55,6 +92,8 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
   const [valDueDate, setDueDate] = useState('');
   const [valueResponsable, setResponsable] = useState('');
   const [valueTeam, setTeam] = useState('');
+  const [valuePriority, setPriority] = useState('LOW');
+  const [valueCategory, setCategory] = useState('Autre');
 
   return (
     <>
@@ -95,26 +134,39 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                 className="find-team"
                 multiline={true} />
               <div>
-                <InputText
+                <DateInput
                   title="Due Date"
                   value={valDueDate}
                   setValue={setDueDate}
-                  placeholder="Titre de la tache"
-                  className="input-text" />
+                  className="input-text"
+                />
                   <br></br>
                 <DropDown 
                 title="Priorité" 
-                items={['Haute', 'Moyenne', 'Basse', 'Aucune']}/>
-                <DropDown 
+                items={['HIGH', 'MEDIUM', 'LOW']}
+                value = {valuePriority}
+                setValue = {setPriority}
+                />
+                <DropDown
                 title="Categorie" 
-                items={['Impact', 'Media', 'Sponsor', 'Rencontre', 'Autre']}/>
+                items={['Impact', 'Media', 'Sponsor', 'Rencontre', 'Autre']}
+                value = {valueCategory}
+                setValue = {setCategory}
+                />
               </div>
             </div>
           </div>
           <button className="close-modal" onClick={onClose}>
             <X size={20} />
           </button>
-          <button className="done-modal" onClick={onClose}>
+          <button className="done-modal" onClick={() => {addNewTask(tasks, setTasks, {
+            title: valueTitle,
+            assignee: valueResponsable,
+            priority: valuePriority,
+            category: valueCategory,
+            dueDate: valDueDate
+
+          }); onClose();}}>
             Publier
           </button>
         </div>

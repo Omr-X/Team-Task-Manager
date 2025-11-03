@@ -2,7 +2,7 @@ export interface Task {
   id: number;
   title: string;
   assignee: string;
-  priority: 'HIGH' | 'MEDIUM' | 'LOW';
+  priority: string;
   dueDate: string;
   category: string;
 }
