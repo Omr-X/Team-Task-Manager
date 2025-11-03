@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router';
 import type { Task } from '../types';
 import { Badge } from '../Main Page/Badge';
 import './TaskPage.css'
 
+interface Comment {
+  id: number;
+  text: string;
+  date: string;
+}
+
 export default function TaskPage() {
     const location = useLocation();
     const navigate = useNavigate();
     const task = location.state?.task as Task;
+
+      const [comments, setComments] = useState<Comment[]>([]);
+  const [commentInput, setCommentInput] = useState('');
+
+  useEffect(() => {
+  const savedComments = localStorage.getItem(`task-comments-${task.id}`);
+  if (savedComments) {
+    setComments(JSON.parse(savedComments));
+  }
+}, [task.id]);
+
+useEffect(() => {
+  if (comments.length > 0) {
+    localStorage.setItem(`task-comments-${task.id}`, JSON.stringify(comments));
+  }
+}, [comments, task.id]);
 
     const deleteTask = () => {
         const saved = localStorage.getItem('tasks');
@@ -17,6 +39,18 @@ export default function TaskPage() {
             const updatedTasks = tasks.filter(t => t.id !== task.id);
             localStorage.setItem('tasks', JSON.stringify(updatedTasks));
             navigate('/');
+        }
+    };
+
+    const commentSubmit = (e:any) => {
+        if (e.key === 'Enter' && commentInput.trim()) {
+            const newComment = {
+                id: Date.now(),
+                text: commentInput,
+                date: new Date().toLocaleDateString()
+            };
+            setComments([...comments, newComment]);
+            setCommentInput('');
         }
     };
 
@@ -73,20 +107,40 @@ export default function TaskPage() {
                     <span className="creation-text">Created by idk on {task.date}</span>
                 </div>
 
-                <div className="comments-section">
-                    <h2 className="subtitle">Comments</h2>
-                    <div className="comment-input-container">
-                        <input
-                            type="text"
-                            className="comment-input"
-                            placeholder="Add a comment..."
-                        />
-                    </div>
+               <div className="comments-section">
+      <h2 className="subtitle">Comments</h2>
+
+      <div className="comment-input-container">
+        <input 
+          type="text" 
+          className="comment-input" 
+          placeholder="Add a comment..."
+          value={commentInput}
+          onChange={(e) => setCommentInput(e.target.value)}
+          onKeyDown={commentSubmit}
+        />
+      </div>
+
+      {comments.length > 0 && (
+        <div className="comments-list">
+          {comments.map((comment) => (
+            <div key={comment.id} className="comment-item">
+              <div className="comment-content">
+                <div className="comment-header">
+                  <span className="comment-date">{comment.date}</span>
                 </div>
-                <div className="actions-container">
-                    <button className="delete-btn" onClick={deleteTask}>Delete Task</button>
-                </div>
+                <p className="comment-text">{comment.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+
+            <div className="actions-container">
+                <button className="delete-btn" onClick={deleteTask}>Delete Task</button>
             </div>
         </div>
+         </div>
     );
 }

@@ -80,47 +80,108 @@
 }
 
 .comments-section {
-    margin-top: 40px;
+  margin-top: 40px;
+}
+
+.comments-list {
+  margin-top: 20px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+  padding: 16px;
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+}
+
+.comment-item:hover {
+  background: #f5f5f5;
+}
+
+.comment-item:last-child {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.comment-text {
+  font-size: 15px;
+  color: #1a1a1a;
+  line-height: 1.6;
+  margin-top: 4px;
+  word-wrap: break-word;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.comment-author {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #999;
 }
 
 .comment-input-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-top: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 15px;
 }
 
 .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #000;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 14px;
-    flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
 }
 
 .comment-input {
-    flex: 1;
-    padding: 12px 15px;
-    border: none;
-    border-bottom: 2px solid #e0e0e0;
-    font-size: 14px;
-    font-family: inherit;
-    transition: border-color 0.2s;
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  border-bottom: 2px solid #e0e0e0;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
 }
 
 .comment-input:focus {
-    outline: none;
-    border-bottom-color: #000;
+  outline: none;
+  border-bottom-color: #000;
 }
 
 .comment-input::placeholder {
-    color: #999;
+  color: #999;
+}
+
+/* Delete button section */
+.actions-container {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #000;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .delete-btn {
