@@ -1,8 +1,8 @@
 import type { Task } from '../types.ts';
 import "./TaskModal.css";
-import { useState, type ReactElement } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import { CircleCheck, X } from 'lucide-react';
-import {addNewTask} from '../Main Page/App.tsx';
+import { addNewTask } from '../Main Page/App.tsx';
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,6 +10,7 @@ interface ModalProps {
   task: Task | null;
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  editingTask?: Task | null;
 }
 
 export function InputText(props: any) {
@@ -24,10 +25,9 @@ export function InputText(props: any) {
 
 export function DateInput(props: any) {
   const formatDate = (value: string) => {
-    // Remove all non-numeric characters
+
     const numbers = value.replace(/\D/g, '');
-    
-    // Add slashes at appropriate positions
+
     if (numbers.length <= 2) {
       return numbers;
     } else if (numbers.length <= 4) {
@@ -42,13 +42,14 @@ export function DateInput(props: any) {
     props.setValue(formatted);
   };
 
+
   return (
     <div>
       <h2 className="subtitle">{props.title}</h2>
-      <input 
-        value={props.value} 
+      <input
+        value={props.value}
         onChange={handleChange}
-        className={props.className} 
+        className={props.className}
         placeholder="DD/MM/YYYY"
         maxLength={10}
       />
@@ -64,7 +65,7 @@ export function DropDown(props: any) {
       <label>
         <div className='row'>
           <h2 className='subtitle'>{title}</h2>
-          <select name={title} className='dropDown' value ={value} onChange={(e) => setValue(e.target.value)}>
+          <select name={title} className='dropDown' value={value} onChange={(e) => setValue(e.target.value)}>
             {items.map((item: string, index: number) => (
               <option key={index} value={item}>
                 {item}
@@ -77,7 +78,7 @@ export function DropDown(props: any) {
   );
 }
 
-export default function Modal({ isOpen, onClose, tasks, setTasks }: ModalProps) {
+export default function Modal({ isOpen, onClose, tasks, setTasks, editingTask }: ModalProps) {
 
   if (isOpen) {
     document.body.classList.add('active-modal');
@@ -87,14 +88,91 @@ export default function Modal({ isOpen, onClose, tasks, setTasks }: ModalProps) 
 
   if (!isOpen) return null;
 
-  const [valueTitle, setValueTitle] = useState('');
-  const [valueDescription, setValueDescription] = useState('');
-  const [valDueDate, setDueDate] = useState('');
-  const [valueResponsable, setResponsable] = useState('');
-  const [valueTeam, setTeam] = useState('');
-  const [valuePriority, setPriority] = useState('LOW');
-  const [valueCategory, setCategory] = useState('Autre');
+  const [valueTitle, setValueTitle] = useState(editingTask?.title || '');
+  const [valueDescription, setValueDescription] = useState(editingTask?.description || '');
+  const [valDueDate, setDueDate] = useState(editingTask?.dueDate || '');
+  const [valueResponsable, setResponsable] = useState(editingTask?.Responsable || '');
+  const [valueTeam, setTeam] = useState(editingTask?.Team || '');
+  const [valuePriority, setPriority] = useState(editingTask?.priority || 'LOW');
+  const [valueCategory, setCategory] = useState(editingTask?.category || 'Autre');
 
+  // Add this helper function at the top of the component (around line 95, before useEffect)
+  const parseFormattedDate = (formattedDate: string): string => {
+    // If it's already in DD/MM/YYYY format, return as is
+    if (formattedDate.includes('/')) return formattedDate;
+
+    // If it's "Date non assignée" or similar, return empty
+    if (!formattedDate || formattedDate.includes('non')) return '';
+
+    // Parse "01 Jan 2025" format back to "01/01/2025"
+    const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+    const parts = formattedDate.split(' ');
+    if (parts.length === 3) {
+      const day = parts[0];
+      const monthIndex = months.indexOf(parts[1]) + 1;
+      const year = parts[2];
+      return `${day}/${monthIndex.toString().padStart(2, '0')}/${year}`;
+    }
+    return '';
+  };
+
+  useEffect(() => {
+    if (editingTask) {
+      setValueTitle(editingTask.title);
+      setValueDescription(editingTask.description);
+      setDueDate(parseFormattedDate(editingTask.dueDate));
+      setResponsable(editingTask.Responsable);
+      setTeam(editingTask.Team);
+      setPriority(editingTask.priority);
+      setCategory(editingTask.category);
+    } else {
+      setValueTitle('');
+      setValueDescription('');
+      setDueDate('');
+      setResponsable('');
+      setTeam('');
+      setPriority('LOW');
+      setCategory('Autre');
+    }
+  }, [editingTask]);
+
+  const handleSave = () => {
+    if (editingTask) {
+      // Editing existing task
+      const updatedTasks = tasks.map((t) =>
+        t.id === editingTask.id
+          ? {
+            ...t,
+            title: valueTitle.trim() || editingTask.title,
+            description: valueDescription.trim() || editingTask.description,
+            dueDate: valDueDate.trim() || editingTask.dueDate,
+            Responsable: valueResponsable.trim() || editingTask.Responsable,
+            Team: valueTeam.trim() || editingTask.Team,
+            priority: valuePriority,
+            category: valueCategory,
+          }
+          : t
+      );
+      setTasks(updatedTasks);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    } else {
+      const newTask = {
+        id: Date.now(),
+        title: valueTitle.trim() || "Nouvelle tâche à définir",
+        description: valueDescription.trim() || "Aucune description a ete donne pour cette tache",
+        dueDate: valDueDate.trim() || "Date non assignée",
+        Responsable: valueResponsable.trim() || "Aucun responsable",
+        Team: valueTeam.trim() || "Aucune equipe pour cette tache",
+        priority: valuePriority,
+        category: valueCategory,
+        date: new Date().toLocaleString('fr-FR')
+      };
+      const newTasks = [...tasks, newTask];
+      setTasks(newTasks);
+      localStorage.setItem('tasks', JSON.stringify(newTasks));
+    }
+    onClose();
+  };
   return (
     <>
       <div className="modal">
@@ -140,18 +218,18 @@ export default function Modal({ isOpen, onClose, tasks, setTasks }: ModalProps) 
                   setValue={setDueDate}
                   className="input-text"
                 />
-                  <br></br>
-                <DropDown 
-                title="Priorité" 
-                items={['HIGH', 'MEDIUM', 'LOW']}
-                value = {valuePriority}
-                setValue = {setPriority}
+                <br></br>
+                <DropDown
+                  title="Priorité"
+                  items={['HIGH', 'MEDIUM', 'LOW']}
+                  value={valuePriority}
+                  setValue={setPriority}
                 />
                 <DropDown
-                title="Categorie" 
-                items={['Impact', 'Media', 'Sponsor', 'Rencontre', 'Autre']}
-                value = {valueCategory}
-                setValue = {setCategory}
+                  title="Categorie"
+                  items={['Impact', 'Media', 'Sponsor', 'Rencontre', 'Autre']}
+                  value={valueCategory}
+                  setValue={setCategory}
                 />
               </div>
             </div>
@@ -159,18 +237,7 @@ export default function Modal({ isOpen, onClose, tasks, setTasks }: ModalProps) 
           <button className="close-modal" onClick={onClose}>
             <X size={20} />
           </button>
-          <button className="done-modal" onClick={() => {addNewTask(tasks, setTasks, {
-            title: valueTitle,
-            assignee: valueResponsable,
-            priority: valuePriority,
-            category: valueCategory,
-            dueDate: valDueDate,
-            description: valueDescription,
-            Responsable: valueResponsable,
-            Team: valueTeam,
-            date: new Date().toLocaleString('fr-FR')
-
-          }); onClose();}}>
+          <button className="done-modal" onClick={handleSave} >
             Publier
           </button>
         </div>
@@ -180,6 +247,4 @@ export default function Modal({ isOpen, onClose, tasks, setTasks }: ModalProps) 
 
 
 }
-
-
 

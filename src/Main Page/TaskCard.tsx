@@ -26,7 +26,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
         
         <Badge variant="default">
           <User size={14} className="icon" />
-          {task.assignee}
+          {task.Responsable}
         </Badge>
         
         <Badge variant="default">

@@ -20,20 +20,19 @@ export const addNewTask = (
   taskData?: Partial<Task>
 ): Task => {
   const newTask: Task = {
-    id: tasks.length + 1,
+    id: Date.now(),
     title: taskData?.title || "Nouvelle tâche à définir",
-    assignee: taskData?.assignee || "Non assigné",
     priority: taskData?.priority || "MEDIUM",
     dueDate: (taskData?.dueDate && taskData.dueDate !== '')
       ? formatDateString(taskData.dueDate)
       : "Date non assignée",
     category: taskData?.category || "Général",
     description: taskData?.description || "Aucune description a ete donne pour cette tache",
-    Responsable: taskData?.Responsable || "Aucune responsable a ete donne pour cette tache",
+    Responsable: taskData?.Responsable || "Aucun responsable",
     Team: taskData?.Team || "Aucune equipe pour cette tache",
     date: taskData?.date || ""
   };
-  
+
   const updatedTasks = [...tasks, newTask];
   setTasks(updatedTasks);
   localStorage.setItem('tasks', JSON.stringify(updatedTasks));
@@ -94,6 +93,7 @@ export default function TaskManager() {
           task={null}
           tasks={tasks}
           setTasks={setTasks}
+          editingTask={null}
         />
       </div>
     </div>
