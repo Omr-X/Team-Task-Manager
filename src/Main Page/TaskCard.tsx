@@ -14,9 +14,9 @@ export const TaskCard = ({ task }: TaskCardProps) => {
   
   return (
     <button className="task-card" onClick={() => navigate('/TaskPage', { state: { task } })}>  {}
-      <h3 className = "task-title">
+      <h1 className = "task-title">
         {task.title}
-      </h3>
+      </h1>
       
       <div className="badge-container">
         <Badge variant={task.priority}>

@@ -96,31 +96,12 @@ export default function Modal({ isOpen, onClose, tasks, setTasks, editingTask }:
   const [valuePriority, setPriority] = useState(editingTask?.priority || 'LOW');
   const [valueCategory, setCategory] = useState(editingTask?.category || 'Autre');
 
-  // Add this helper function at the top of the component (around line 95, before useEffect)
-  const parseFormattedDate = (formattedDate: string): string => {
-    // If it's already in DD/MM/YYYY format, return as is
-    if (formattedDate.includes('/')) return formattedDate;
-
-    // If it's "Date non assignée" or similar, return empty
-    if (!formattedDate || formattedDate.includes('non')) return '';
-
-    // Parse "01 Jan 2025" format back to "01/01/2025"
-    const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
-    const parts = formattedDate.split(' ');
-    if (parts.length === 3) {
-      const day = parts[0];
-      const monthIndex = months.indexOf(parts[1]) + 1;
-      const year = parts[2];
-      return `${day}/${monthIndex.toString().padStart(2, '0')}/${year}`;
-    }
-    return '';
-  };
 
   useEffect(() => {
     if (editingTask) {
       setValueTitle(editingTask.title);
       setValueDescription(editingTask.description);
-      setDueDate(parseFormattedDate(editingTask.dueDate));
+      setDueDate(editingTask.dueDate);
       setResponsable(editingTask.Responsable);
       setTeam(editingTask.Team);
       setPriority(editingTask.priority);

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, House, ChartColumn, Settings, Sun} from 'lucide-react';
 import { TaskCard } from './TaskCard';
 import Modal from '../Modal/TaskModal';
 import type { Task } from '../types';
 import './App.css';
+import { useNavigate } from 'react-router-dom';
 
 const fullMonths = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
 
@@ -45,10 +46,11 @@ export default function TaskManager() {
     if (saved) {
       return JSON.parse(saved);
     }
-    return []; // ← Return empty array as default
+    return [];
   });
 
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
@@ -56,23 +58,54 @@ export default function TaskManager() {
 
   return (
     <div className="app-container">
-      <div className="top-bar">
-        <div className="top-bar-content"></div>
+      <div className="side-bar">
+        <div className="top-bar-content">
+          <div className='side-bar-content' style={{ margin: 'auto', width: '50%', padding: '10px' }}>
+            <button className='add-button-black-icon'><House size={30} /></button>
+            <button onClick={() => navigate('/DashBoard')} className='add-button-black-icon'><ChartColumn size={30} /></button>
+            <button className='add-button-black-icon-setting'><Settings size={30} /></button>
+          </div>
+        </div>
       </div>
 
       <div className="main-content">
-        <div className="header">
-          <h1 className="main-title">Suivi de Comm</h1>
-          <p className="subtitle">Toutes les tâches seront données ici</p>
+        <div className="header-app">
+          <h1 className="main-title-page">Suivi de Comm</h1>
+          <p className="description-page">Toutes les tâches seront données ici</p>
         </div>
 
-        <button
-          onClick={toggleModal}
-          className="add-button"
-        >
-          <Plus size={20} />
-          Ajouter une tâche
-        </button>
+        <div className="filter-sort-container">
+          <div className="filter-section">
+            <label>Filtrer par:</label>
+            <select className="filter-select">
+              <option value="">Toutes les catégories</option>
+              <option value="Finance">Finance</option>
+              <option value="Tech">Tech</option>
+              <option value="RH">RH</option>
+              <option value="Général">Général</option>
+            </select>
+
+            <select className="filter-select">
+              <option value="">Tous les responsables</option>
+            </select>
+
+            <select className="filter-select">
+              <option value="">Toutes les priorités</option>
+              <option value="HIGH">Haute</option>
+              <option value="MEDIUM">Moyenne</option>
+              <option value="LOW">Basse</option>
+            </select>
+          </div>
+
+          <div className="sort-section">
+            <label>Trier par:</label>
+            <select className="sort-select">
+              <option value="dueDate">Date d'échéance</option>
+              <option value="priority">Priorité</option>
+              <option value="category">Catégorie</option>
+            </select>
+          </div>
+        </div>
 
         <div className="tasks-list">
           {tasks.map((task) => (
@@ -86,6 +119,12 @@ export default function TaskManager() {
             <p>Cliquez sur le bouton ci-dessus pour en ajouter une</p>
           </div>
         )}
+
+
+        <button className='plus-button' onClick={toggleModal}>
+          <Plus size={20} />
+        </button>
+
 
         <Modal
           isOpen={modalOpen}
