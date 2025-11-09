@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { House,Settings, ChartColumn } from 'lucide-react';
 import { PencilLine } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router';
 import type { Task } from '../types';
@@ -73,16 +73,14 @@ export default function TaskPage() {
   }
   return (
     <div className="app-container">
-      <div className="top-bar">
+      <div className="side-bar">
         <div className="top-bar-content">
-          <button className='add-button-black' onClick={() => navigate('/')}>
-            <div className='row'>
-              <ArrowLeft size={35} />
-              <h1>
-                RETOUR
-              </h1>
-            </div>
-          </button>
+          <div className='side-bar-content' style={{ margin: 'auto', width: '50%', padding: '10px' }}>
+            <br></br>
+            <button onClick={() => navigate('/')} className='add-button-black-icon'><House size={30} /></button>
+            <button onClick={() => navigate('/DashBoard')} className='add-button-black-icon'><ChartColumn size={30} /></button>
+            <button className='add-button-black-icon-setting'><Settings size={30} /></button>
+          </div>
         </div>
       </div>
 

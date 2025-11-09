@@ -212,14 +212,14 @@ export default function Modal({ isOpen, onClose, tasks, setTasks, editingTask }:
                   value={valueCategory}
                   setValue={setCategory}
                 />
+                <button className="done-modal" onClick={handleSave} >
+                  Publier
+                </button>
               </div>
             </div>
           </div>
           <button className="close-modal" onClick={onClose}>
             <X size={20} />
-          </button>
-          <button className="done-modal" onClick={handleSave} >
-            Publier
           </button>
         </div>
       </div>

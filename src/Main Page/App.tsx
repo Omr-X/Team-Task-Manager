@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, House, ChartColumn, Settings, Sun} from 'lucide-react';
+import { Plus, House, ChartColumn, Settings, Sun, ListFilter, Funnel} from 'lucide-react';
 import { TaskCard } from './TaskCard';
 import Modal from '../Modal/TaskModal';
 import type { Task } from '../types';
@@ -61,7 +61,8 @@ export default function TaskManager() {
       <div className="side-bar">
         <div className="top-bar-content">
           <div className='side-bar-content' style={{ margin: 'auto', width: '50%', padding: '10px' }}>
-            <button className='add-button-black-icon'><House size={30} /></button>
+            <br></br>
+            <button onClick={() => navigate('/')} className='add-button-black-icon'><House size={30} /></button>
             <button onClick={() => navigate('/DashBoard')} className='add-button-black-icon'><ChartColumn size={30} /></button>
             <button className='add-button-black-icon-setting'><Settings size={30} /></button>
           </div>
@@ -74,38 +75,56 @@ export default function TaskManager() {
           <p className="description-page">Toutes les tâches seront données ici</p>
         </div>
 
-        <div className="filter-sort-container">
-          <div className="filter-section">
-            <label>Filtrer par:</label>
-            <select className="filter-select">
-              <option value="">Toutes les catégories</option>
-              <option value="Finance">Finance</option>
-              <option value="Tech">Tech</option>
-              <option value="RH">RH</option>
-              <option value="Général">Général</option>
-            </select>
-
-            <select className="filter-select">
-              <option value="">Tous les responsables</option>
-            </select>
-
-            <select className="filter-select">
-              <option value="">Toutes les priorités</option>
-              <option value="HIGH">Haute</option>
-              <option value="MEDIUM">Moyenne</option>
-              <option value="LOW">Basse</option>
-            </select>
-          </div>
-
-          <div className="sort-section">
-            <label>Trier par:</label>
-            <select className="sort-select">
-              <option value="dueDate">Date d'échéance</option>
-              <option value="priority">Priorité</option>
-              <option value="category">Catégorie</option>
-            </select>
-          </div>
+        <div className="filter-sort-bar">
+  <div className="filter-button-wrapper">
+    <button className="filter-button">
+      <div className='row'>
+      <div><Funnel size = {13}/></div>
+      Trier par: Date d'échéance
+      </div>
+    </button>
+    <div className="filter-sections">
+      <div className="filter-section-item">
+        <button className="section-button">Catégorie</button>
+        <div className="section-choices">
+          <button>Finance</button>
+          <button>Tech</button>
+          <button>RH</button>
+          <button>Général</button>
         </div>
+      </div>
+      <div className="filter-section-item">
+        <button className="section-button">Responsable</button>
+        <div className="section-choices">
+          <button>Responsable 1</button>
+          <button>Responsable 2</button>
+        </div>
+      </div>
+      <div className="filter-section-item">
+        <button className="section-button">Priorité</button>
+        <div className="section-choices">
+          <button>Haute</button>
+          <button>Moyenne</button>
+          <button>Basse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div className="sort-button-wrapper">
+    <button className="sort-button">
+      <div className='row'>
+      <div><ListFilter size = {13}/></div>
+      Trier par: Date d'échéance
+      </div>
+    </button>
+    <div className="sort-submenu">
+      <button>Date d'échéance</button>
+      <button>Priorité</button>
+      <button>Catégorie</button>
+    </div>
+  </div>
+</div>
 
         <div className="tasks-list">
           {tasks.map((task) => (
@@ -120,11 +139,9 @@ export default function TaskManager() {
           </div>
         )}
 
-
         <button className='plus-button' onClick={toggleModal}>
           <Plus size={20} />
         </button>
-
 
         <Modal
           isOpen={modalOpen}
