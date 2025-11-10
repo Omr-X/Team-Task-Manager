@@ -1,0 +1,153 @@
+.chip-autocomplete-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.chip-autocomplete-container {
+  position: relative;
+  width: 100%;
+}
+
+.chip-input-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  cursor: text;
+  min-height: 50px;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+/* For single-line inputs (responsable), allow horizontal scroll */
+.chip-input-box.input-text {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+/* For multi-line inputs (team), allow wrapping and grow vertically */
+.chip-input-box.find-team {
+  min-height: 250px;
+  align-items: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #000;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.chip-remove:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.chip-input {
+  flex: 1;
+  min-width: 120px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: clamp(14px, 1.5vw, 16px);
+  padding: 0;
+}
+
+.chip-input::placeholder {
+  color: #999;
+}
+
+.chip-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid gray;
+  border-radius: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chip-suggestion-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: clamp(14px, 1.5vw, 16px);
+}
+
+.chip-suggestion-item:hover,
+.chip-suggestion-item.highlighted {
+  background-color: #f0f0f0;
+}
+
+.chip-suggestion-item:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.chip-suggestion-item:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+/* Scrollbar styling for horizontal scroll in input-text */
+.chip-input-box.input-text::-webkit-scrollbar {
+  height: 6px;
+}
+
+.chip-input-box.input-text::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.chip-input-box.input-text::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.chip-input-box.input-text::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Scrollbar styling for suggestions dropdown */
+.chip-suggestions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chip-suggestions::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.chip-suggestions::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.chip-suggestions::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

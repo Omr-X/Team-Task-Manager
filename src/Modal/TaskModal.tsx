@@ -1,8 +1,8 @@
 import type { Task } from '../types.ts';
 import "./TaskModal.css";
-import { useEffect, useState, type ReactElement } from "react";
+import { useEffect, useState } from "react";
 import { CircleCheck, X } from 'lucide-react';
-import { addNewTask } from '../Main Page/App.tsx';
+import { ChipAutocomplete } from '../AutoCompletion/ChipAutocomplete.tsx';
 
 interface ModalProps {
   isOpen: boolean;
@@ -96,6 +96,30 @@ export default function Modal({ isOpen, onClose, tasks, setTasks, editingTask }:
   const [valuePriority, setPriority] = useState(editingTask?.priority || 'LOW');
   const [valueCategory, setCategory] = useState(editingTask?.category || 'Autre');
 
+  // Sample suggestions - replace with your actual data
+  const responsableSuggestions = [
+    'Jean Dupont',
+    'Marie Martin',
+    'Pierre Dubois',
+    'Sophie Laurent',
+    'Lucas Bernard',
+    'Emma Petit',
+    'Thomas Robert',
+    'Camille Moreau'
+  ];
+
+  const teamSuggestions = [
+    'Alice Johnson',
+    'Bob Smith',
+    'Charlie Brown',
+    'Diana Prince',
+    'Ethan Hunt',
+    'Fiona Green',
+    'George Wilson',
+    'Hannah Lee',
+    'Ian Malcolm',
+    'Julia Roberts'
+  ];
 
   useEffect(() => {
     if (editingTask) {
@@ -154,6 +178,7 @@ export default function Modal({ isOpen, onClose, tasks, setTasks, editingTask }:
     }
     onClose();
   };
+
   return (
     <>
       <div className="modal">
@@ -171,12 +196,14 @@ export default function Modal({ isOpen, onClose, tasks, setTasks, editingTask }:
               setValue={setValueTitle}
               placeholder="Titre de la tache"
               className="input-text" />
-            <InputText
+            <ChipAutocomplete
               title="Personne responsable pour la tache"
               value={valueResponsable}
               setValue={setResponsable}
               placeholder="Recherche la personne responsable"
-              className="input-text" />
+              className="input-text"
+              suggestions={responsableSuggestions}
+            />
           </div>
           <div className="row">
             <InputText title="Description"
@@ -186,12 +213,14 @@ export default function Modal({ isOpen, onClose, tasks, setTasks, editingTask }:
               className="description-text"
               multiline={true} />
             <div className="row">
-              <InputText title="Equipe attitre a la tache"
+              <ChipAutocomplete
+                title="Equipe attitre a la tache"
                 value={valueTeam}
                 setValue={setTeam}
                 placeholder="Recherche les membres de l'equipe"
                 className="find-team"
-                multiline={true} />
+                suggestions={teamSuggestions}
+              />
               <div>
                 <DateInput
                   title="Due Date"
@@ -225,7 +254,4 @@ export default function Modal({ isOpen, onClose, tasks, setTasks, editingTask }:
       </div>
     </>
   );
-
-
 }
-
